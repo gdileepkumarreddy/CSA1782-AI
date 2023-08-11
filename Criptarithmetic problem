@@ -1,0 +1,32 @@
+from itertools import permutations
+
+def is_valid(puzzle, solution):
+    puzzle_chars = set("".join(puzzle))
+    solution_chars = set("".join(solution))
+    if len(puzzle_chars) != len(solution_chars):
+        return False
+
+    char_map = {}
+    for p_char, s_char in zip(puzzle, solution):
+        if p_char in char_map:
+            if char_map[p_char] != s_char:
+                return False
+        else:
+            char_map[p_char] = s_char
+
+    return all(char_map[p_char] != '0' for p_char in puzzle)
+
+def solve_cryptarithmetic(puzzle):
+    puzzle_chars = set("".join(puzzle))
+    for perm in permutations('0123456789', len(puzzle_chars)):
+        solution = ''.join(perm)
+        if is_valid(puzzle, solution):
+            return solution
+    return None
+
+puzzle = input("Enter the cryptarithmetic puzzle: ")
+solution = solve_cryptarithmetic(puzzle)
+if solution:
+    print("Solution found:", solution)
+else:
+    print("No solution found.")
