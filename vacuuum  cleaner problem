@@ -1,0 +1,40 @@
+class VacuumCleaner:
+    def __init__(self, location, environment):
+        self.location = location
+        self.environment = environment
+        self.performance = 0
+
+    def sense(self):
+        return self.environment[self.location]
+
+    def move(self, new_location):
+        print(f"Moving from {self.location} to {new_location}.")
+        self.location = new_location
+        self.performance -= 1
+
+    def clean(self):
+        print(f"Cleaning at location {self.location}.")
+        self.environment[self.location] = 0
+        self.performance += 1
+
+def main():
+    environment = [1, 0, 1, 1, 0]  # 1 represents dirty and 0 represents clean
+    vacuum_cleaner = VacuumCleaner(0, environment)
+
+    print("Initial environment:", environment)
+
+    while any(environment):
+        current_location = vacuum_cleaner.location
+        current_status = vacuum_cleaner.sense()
+
+        if current_status == 1:
+            vacuum_cleaner.clean()
+        else:
+            other_location = (current_location + 1) % 2
+            vacuum_cleaner.move(other_location)
+
+    print("Final environment:", environment)
+    print("Performance score:", vacuum_cleaner.performance)
+
+if __name__ == "__main__":
+    main()
